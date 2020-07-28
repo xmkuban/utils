@@ -31,5 +31,8 @@ func GetServiceLock(service string, key interface{}) *sync.Mutex {
 		}
 		registerServiceLock.Unlock()
 	}
+	registerServiceLock.Lock()
+	lockCache.Put(k, lock, time.Second*30)
+	registerServiceLock.Unlock()
 	return lock.(*sync.Mutex)
 }
