@@ -203,6 +203,12 @@ func (rc *Cache) TTL(key string) time.Duration {
 	return -1
 }
 
+//This method is not implemented
+func (rc *Cache) GetAndTTL(key string) (interface{}, time.Duration) {
+
+	return nil, 0
+}
+
 // connect to redis.
 func (rc *Cache) connectInit() {
 	dialFunc := func() (c redis.Conn, err error) {

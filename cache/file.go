@@ -212,9 +212,15 @@ func (fc *FileCache) ClearAll() error {
 }
 
 //This method is not implemented
-func (bc *FileCache) TTL(key string) time.Duration {
+func (fc *FileCache) TTL(key string) time.Duration {
 
 	return -1
+}
+
+//This method is not implemented
+func (fc *FileCache) GetAndTTL(key string) (interface{}, time.Duration) {
+
+	return nil, 0
 }
 
 // check file exist.

@@ -22,7 +22,7 @@ func init() {
 func GetServiceLock(service string, key interface{}) *sync.Mutex {
 	_lockTimeout := time.Second * time.Duration(lockTimeout)
 	k := service + fmt.Sprint(key)
-	lock := lockCache.Get(k)
+	lock, expire := lockCache.GetAndTTL(k)
 	if lock == nil {
 		registerServiceLock.Lock()
 		lock = lockCache.Get(k)
@@ -34,7 +34,6 @@ func GetServiceLock(service string, key interface{}) *sync.Mutex {
 		}
 		registerServiceLock.Unlock()
 	} else {
-		expire := lockCache.TTL(k)
 		if expire.Seconds() <= 1 {
 			registerServiceLock.Lock()
 			lockCache.Put(k, lock, _lockTimeout)

@@ -47,7 +47,7 @@ func (mi *MemoryItem) ttl() time.Duration {
 	if mi.lifespan == 0 {
 		return -1
 	}
-	diff := time.Now().Sub(mi.createdTime) - mi.lifespan
+	diff := mi.lifespan - time.Now().Sub(mi.createdTime)
 	if diff <= 0 {
 		return 0
 	}
@@ -85,6 +85,18 @@ func (bc *MemoryCache) Get(name string) interface{} {
 		return itm.val
 	}
 	return nil
+}
+
+func (bc *MemoryCache) GetAndTTL(name string) (interface{}, time.Duration) {
+	bc.RLock()
+	defer bc.RUnlock()
+	if itm, ok := bc.items[name]; ok {
+		if itm.isExpire() {
+			return nil, 0
+		}
+		return itm.val, itm.ttl()
+	}
+	return nil, 0
 }
 
 // GetMulti gets caches from memory.

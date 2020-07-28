@@ -183,6 +183,12 @@ func (rc *Cache) TTL(key string) time.Duration {
 	return -1
 }
 
+//This method is not implemented
+func (rc *Cache) GetAndTTL(key string) (interface{}, time.Duration) {
+
+	return nil, 0
+}
+
 // connect to memcache and keep the connection.
 func (rc *Cache) connectInit() error {
 	rc.conn = memcache.New(rc.conninfo...)

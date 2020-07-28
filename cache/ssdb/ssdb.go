@@ -232,6 +232,12 @@ func (bc *Cache) TTL(key string) time.Duration {
 	return -1
 }
 
+//This method is not implemented
+func (bc *Cache) GetAndTTL(key string) (interface{}, time.Duration) {
+
+	return nil, 0
+}
+
 func init() {
 	cache.Register("ssdb", NewSsdbCache)
 }
