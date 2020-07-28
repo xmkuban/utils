@@ -197,6 +197,12 @@ func (rc *Cache) StartAndGC(config string) error {
 	return c.Err()
 }
 
+//This method is not implemented
+func (rc *Cache) TTL(key string) time.Duration {
+
+	return -1
+}
+
 // connect to redis.
 func (rc *Cache) connectInit() {
 	dialFunc := func() (c redis.Conn, err error) {

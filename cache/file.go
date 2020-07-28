@@ -211,6 +211,12 @@ func (fc *FileCache) ClearAll() error {
 	return nil
 }
 
+//This method is not implemented
+func (bc *FileCache) TTL(key string) time.Duration {
+
+	return -1
+}
+
 // check file exist.
 func exists(path string) (bool, error) {
 	_, err := os.Stat(path)

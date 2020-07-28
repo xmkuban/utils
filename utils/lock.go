@@ -12,8 +12,7 @@ var (
 	registerServiceLock = sync.Mutex{}
 	lockCache           cache.Cache
 
-	serverLockTimeout = time.Minute      //server锁过期时间
-	keyLockTimeout    = time.Second * 30 //server下的key锁过期时间
+	lockTimeout = 30 //server下的key锁过期时间, 单位秒, 目前限制最少存1s
 )
 
 func init() {
@@ -21,47 +20,33 @@ func init() {
 }
 
 func GetServiceLock(service string, key interface{}) *sync.Mutex {
-	lockServer := lockCache.Get(service)
-	if lockServer == nil {
-		registerServiceLock.Lock()
-		lockServer = lockCache.Get(service)
-		if lockServer == nil {
-			lockServer = new(sync.Mutex)
-			lockCache.Put(service, lockServer, serverLockTimeout)
-		}
-		registerServiceLock.Unlock()
-	}
-	_lockServer := lockServer.(*sync.Mutex)
+	_lockTimeout := time.Second * time.Duration(lockTimeout)
 	k := service + fmt.Sprint(key)
 	lock := lockCache.Get(k)
 	if lock == nil {
-		_lockServer.Lock()
+		registerServiceLock.Lock()
 		lock = lockCache.Get(k)
 		if lock == nil {
 			lock = new(sync.Mutex)
-			lockCache.Put(k, lock, keyLockTimeout)
-			_lockServer.Unlock()
+			lockCache.Put(k, lock, _lockTimeout)
+			registerServiceLock.Unlock()
 			return lock.(*sync.Mutex)
 		}
-		_lockServer.Unlock()
+		registerServiceLock.Unlock()
 	} else {
-		_lockServer.Lock()
-		lockCache.Put(k, lock, keyLockTimeout)
-		_lockServer.Unlock()
+		expire := lockCache.TTL(k)
+		if expire.Seconds() <= 1 {
+			registerServiceLock.Lock()
+			lockCache.Put(k, lock, _lockTimeout)
+			registerServiceLock.Unlock()
+		}
 	}
 	return lock.(*sync.Mutex)
 }
 
-func SetServerLockTimeout(t time.Duration) {
-	if t.Nanoseconds() == 0 {
+func SetKeyLockTimeout(t int) {
+	if t <= 1 {
 		return
 	}
-	serverLockTimeout = t
-}
-
-func SetKeyLockTimeout(t time.Duration) {
-	if t.Nanoseconds() == 0 {
-		return
-	}
-	keyLockTimeout = t
+	lockTimeout = t
 }

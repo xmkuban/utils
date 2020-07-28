@@ -65,6 +65,8 @@ type Cache interface {
 	ClearAll() error
 	// start gc routine based on config string settings.
 	StartAndGC(config string) error
+
+	TTL(key string) time.Duration
 }
 
 // Instance is a function create a new Cache Instance

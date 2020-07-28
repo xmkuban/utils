@@ -43,6 +43,17 @@ func (mi *MemoryItem) isExpire() bool {
 	return time.Now().Sub(mi.createdTime) > mi.lifespan
 }
 
+func (mi *MemoryItem) ttl() time.Duration {
+	if mi.lifespan == 0 {
+		return -1
+	}
+	diff := time.Now().Sub(mi.createdTime) - mi.lifespan
+	if diff <= 0 {
+		return 0
+	}
+	return diff
+}
+
 // MemoryCache is Memory cache adapter.
 // it contains a RW locker for safe map storage.
 type MemoryCache struct {
@@ -259,6 +270,15 @@ func (bc *MemoryCache) clearItems(keys []string) {
 	for _, key := range keys {
 		delete(bc.items, key)
 	}
+}
+
+func (bc *MemoryCache) TTL(key string) time.Duration {
+	bc.RLock()
+	defer bc.RUnlock()
+	if _, ok := bc.items[key]; !ok {
+		return 0
+	}
+	return bc.items[key].ttl()
 }
 
 func init() {

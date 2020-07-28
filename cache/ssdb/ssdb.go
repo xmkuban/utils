@@ -226,6 +226,12 @@ func (rc *Cache) connectInit() error {
 	return err
 }
 
+//This method is not implemented
+func (bc *Cache) TTL(key string) time.Duration {
+
+	return -1
+}
+
 func init() {
 	cache.Register("ssdb", NewSsdbCache)
 }
