@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -41,6 +42,20 @@ func GetServiceLock(service string, key interface{}) *sync.Mutex {
 		}
 	}
 	return lock.(*sync.Mutex)
+}
+
+// 延长锁的使用，针对大时间事务需要延长锁的情况
+func LockExtendTime(service string, key interface{}, lock *sync.Mutex) error {
+	_lockTimeout := time.Second * time.Duration(lockTimeout)
+	k := service + fmt.Sprint(key)
+	_lock := lockCache.Get(k)
+	if _lock == nil {
+		return errors.New("not expired")
+	}
+	registerServiceLock.Lock()
+	lockCache.Put(k, lock, _lockTimeout)
+	registerServiceLock.Unlock()
+	return nil
 }
 
 func SetKeyLockTimeout(t int) {

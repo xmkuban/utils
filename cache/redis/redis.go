@@ -199,14 +199,19 @@ func (rc *Cache) StartAndGC(config string) error {
 
 //This method is not implemented
 func (rc *Cache) TTL(key string) time.Duration {
-
-	return -1
+	t, err := redis.Int64(rc.do("TTL", key))
+	if err != nil {
+		return -1
+	}
+	if t < 0 {
+		return -1
+	}
+	return time.Duration(t) * time.Second
 }
 
 //This method is not implemented
 func (rc *Cache) GetAndTTL(key string) (interface{}, time.Duration) {
-
-	return nil, 0
+	return rc.Get(key), rc.TTL(key)
 }
 
 // connect to redis.

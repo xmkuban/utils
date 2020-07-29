@@ -179,14 +179,28 @@ func (rc *Cache) StartAndGC(config string) error {
 
 //This method is not implemented
 func (rc *Cache) TTL(key string) time.Duration {
-
+	if rc.conn == nil {
+		if err := rc.connectInit(); err != nil {
+			return -1
+		}
+	}
+	if item, err := rc.conn.Get(key); err == nil {
+		return time.Second * time.Duration(item.Expiration)
+	}
 	return -1
 }
 
 //This method is not implemented
 func (rc *Cache) GetAndTTL(key string) (interface{}, time.Duration) {
-
-	return nil, 0
+	if rc.conn == nil {
+		if err := rc.connectInit(); err != nil {
+			return nil, -1
+		}
+	}
+	if item, err := rc.conn.Get(key); err == nil {
+		return item.Value, time.Second * time.Duration(item.Expiration)
+	}
+	return nil, -1
 }
 
 // connect to memcache and keep the connection.
