@@ -3,9 +3,7 @@ package render
 import (
 	"bytes"
 	"errors"
-	"image"
 	"image/jpeg"
-	"image/png"
 	"sync"
 
 	"github.com/xmkuban/logger"
@@ -91,7 +89,6 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 	if err != nil {
 		return
 	}
-	var resultImage image.Image
 	for _, viewer := range viewOrder {
 		if viewer != nil {
 			err = viewer.Draw(graphic)
@@ -100,16 +97,15 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 			}
 		}
 	}
-	resultImage = ctx.Image()
 
 	buf := new(bytes.Buffer)
 
 	switch renderRequest.Format {
 	case PNG:
-		err = png.Encode(buf, resultImage)
+		err = ctx.EncodePNG(buf)
 	default:
 		quality := utils.Condition(renderRequest.Quality <= 0, 75, renderRequest.Quality).(int)
-		err = jpeg.Encode(buf, resultImage, &jpeg.Options{Quality: quality})
+		err = ctx.EncodeJPG(buf, &jpeg.Options{Quality: quality})
 	}
 
 	if err != nil {
