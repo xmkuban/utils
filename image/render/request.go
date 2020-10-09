@@ -50,3 +50,7 @@ type ViewData struct {
 func (this *ViewData) SetImg(img image.Image) {
 	this.img = img
 }
+
+func (this *ViewData) GetImg() image.Image {
+	return this.img
+}
