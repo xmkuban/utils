@@ -1,5 +1,7 @@
 package render
 
+import "image"
+
 type ImageData struct {
 	Quality int         `json:"quality"`
 	Format  ImageFormat `json:"format"`
@@ -28,7 +30,7 @@ type ViewData struct {
 	Text        string      `json:"text"`
 	Font        string      `json:"font"`
 	FontPath    string      `json:"font_path"`
-	Size        float64     `json:"size"`
+	Size        float64     `json:"size"` // qr code 也会用到
 	Color       string      `json:"color"`
 	Orientation Orientation `json:"orientation"`
 
@@ -41,4 +43,10 @@ type ViewData struct {
 	Y2    int     `json:"y2"`
 
 	IsCache bool `json:"is_cache"`
+
+	img image.Image `json:"-"`
+}
+
+func (this *ViewData) SetImg(img image.Image) {
+	this.img = img
 }

@@ -14,7 +14,7 @@ import (
 )
 
 // Max image size: 200KB
-const MAX_IMAGE_SIZE = 1024 * 512
+//const MAX_IMAGE_SIZE = 1024 * 512
 const ImageViewType = "image"
 
 type ImageView struct {
@@ -51,29 +51,40 @@ func (view *ImageView) Init(data ViewData) (err error) {
 	if data.URL == "" {
 		return errors.New("invalid image data")
 	}
+	if view.img != nil {
+		view.img = ResizeImage(view.img, uint(data.W), uint(data.H))
+		return
+	}
 
-	if view.img == nil {
-		var imageData []byte
-		if len(view.data.ImageByte) > 0 {
-			imageData = view.data.ImageByte
+	if view.data.img != nil {
+		view.img = view.data.img
+		return
+	}
+
+	var imageData []byte
+	if len(view.data.ImageByte) > 0 {
+		imageData = view.data.ImageByte
+	} else {
+		if strings.Contains(view.data.URL, "http") {
+			var resp *resty.Response
+			resp, err = resty.New().R().Get(view.data.URL)
+			imageData = resp.Body()
 		} else {
-			if strings.Contains(view.data.URL, "http") {
-				var resp *resty.Response
-				resp, err = resty.New().R().Get(view.data.URL)
-				imageData = resp.Body()
-			} else {
-				imageData, err = ioutil.ReadFile(view.data.URL)
-			}
-		}
-		if err != nil {
-			return
-		}
-		view.img, _, err = image.Decode(bytes.NewReader(imageData))
-		if err != nil {
-			return err
+			imageData, err = ioutil.ReadFile(view.data.URL)
 		}
 	}
-	view.img = ResizeImage(view.img, uint(data.W), uint(data.H))
+	if err != nil {
+		return
+	}
+	view.img, _, err = image.Decode(bytes.NewReader(imageData))
+	if err != nil {
+		return err
+	}
+	if view.img != nil {
+		view.data.img = view.img
+		view.img = ResizeImage(view.img, uint(data.W), uint(data.H))
+		return
+	}
 	return
 }
 
