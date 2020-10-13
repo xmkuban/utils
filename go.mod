@@ -18,6 +18,7 @@ require (
 	github.com/shopspring/decimal v1.2.0
 	github.com/skip2/go-qrcode v0.0.0-20200526175731-7ac0b40b2038
 	github.com/ssdb/gossdb v0.0.0-20180723034631-88f6b59b84ec
+	github.com/tuotoo/qrcode v0.0.0-20190222102259-ac9c44189bf2 // indirect
 	github.com/xmkuban/logger v0.0.0-20200728030503-367b4f126b64
 	go.mongodb.org/mongo-driver v1.3.4
 	golang.org/x/image v0.0.0-20200609002522-3f4726a040e8
