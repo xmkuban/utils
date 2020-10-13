@@ -12,14 +12,15 @@ type Orientation int
 type TextView struct {
 	View
 	fontFace   font.Face
-	isVertical bool
+	isVertical bool //是否是竖排文字
 }
 
 const (
-	Horizontal Orientation = iota
-	Vertical
-	TextViewType = "text"
+	Horizontal Orientation = iota //横排
+	Vertical                      //竖排
 )
+
+const TextViewType = "text"
 
 func init() {
 	RegisterViewHandlerMapping(TextViewType, func() Viewer {
