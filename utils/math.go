@@ -56,6 +56,11 @@ func FloatExponent(a float64, exp int32) float64 {
 	return _c
 }
 
+func DecimalToFloat(a decimal.Decimal) float64 {
+	b, _ := a.Float64()
+	return b
+}
+
 func MaxInt(a, b int) int {
 	return int(math.Max(float64(a), float64(b)))
 }
