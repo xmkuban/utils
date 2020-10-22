@@ -204,6 +204,8 @@ github.com/xdg/stringprep v0.0.0-20180714160509-73f8eece6fdc h1:n+nNi93yXLkJvKwX
 github.com/xdg/stringprep v0.0.0-20180714160509-73f8eece6fdc/go.mod h1:Jhud4/sHMO4oL310DaZAKk9ZaJ08SJfe+sJh0HrGL1Y=
 github.com/xmkuban/logger v0.0.0-20200728030503-367b4f126b64 h1:lO9g2sHUhbJXLZWN/QLql8nrjB+1OUKkLiTWlFcuMLY=
 github.com/xmkuban/logger v0.0.0-20200728030503-367b4f126b64/go.mod h1:yCbjvnrVdxdl1rXzpHYPqqo+WnMeWVWrAsAmplVgp6I=
+github.com/xmkuban/logger v0.0.0-20200924025207-8d2edb3a2ddc h1:2btxel56nhIq4qlmeN20KqAW5RN73BqIUgtlqT2qFKE=
+github.com/xmkuban/logger v0.0.0-20200924025207-8d2edb3a2ddc/go.mod h1:yCbjvnrVdxdl1rXzpHYPqqo+WnMeWVWrAsAmplVgp6I=
 github.com/yuin/gopher-lua v0.0.0-20171031051903-609c9cd26973/go.mod h1:aEV29XrmTYFr3CiRxZeGHpkvbwq+prZduBqMaascyCU=
 go.mongodb.org/mongo-driver v1.3.4 h1:zs/dKNwX0gYUtzwrN9lLiR15hCO0nDwQj5xXx+vjCdE=
 go.mongodb.org/mongo-driver v1.3.4/go.mod h1:MSWZXKOynuguX+JSvwP8i+58jYCXxbia8HS3gZBapIE=

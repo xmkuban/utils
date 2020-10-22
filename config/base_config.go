@@ -96,7 +96,7 @@ func GetConfigLoaderByType(loaderType string) ConfigLoader {
 
 func GetConfigLoader() ConfigLoader {
 	if PresetConfig == nil {
-		logger.Criticalf("Preset config need to be set")
+		logger.Error("Preset config need to be set")
 		panic("preset config is nil")
 		return nil
 	}
