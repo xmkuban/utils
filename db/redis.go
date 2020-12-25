@@ -467,3 +467,12 @@ func (r *RedisWrap) Zrevrangebyscore(key string, max int64, min int64, withscore
 	}
 	return redis.Strings(conn.Do("ZREVRANGEBYSCORE", key, max, min, "WITHSCORES"))
 }
+
+func (r *RedisWrap) Zrangebyscore(key string, max int64, min int64, withscore bool) ([]string, error) {
+	conn := r.GetConn()
+	defer conn.Close()
+	if !withscore {
+		return redis.Strings(conn.Do("ZRANGEBYSCORE", key, max, min))
+	}
+	return redis.Strings(conn.Do("ZRANGEBYSCORE", key, max, min, "WITHSCORES"))
+}
