@@ -28,7 +28,7 @@ func GetImageSize(im image.Image) (w, h uint) {
 
 func ResizeImage(im image.Image, w, h uint) image.Image {
 	if imageW, imageH := GetImageSize(im); (imageW != w || imageH != h) && (w != 0 && h != 0) {
-		im = resize.Resize(w, h, im, resize.NearestNeighbor)
+		im = resize.Resize(w, h, im, resize.Lanczos3)
 	}
 	return im
 }
