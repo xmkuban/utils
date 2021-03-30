@@ -352,7 +352,7 @@ func (r *RedisWrap) Lrange(key string, start int, end int) ([]interface{}, error
 	return redis.Values(conn.Do("LRANGE", key, start, end))
 }
 
-func (r *RedisWrap) Sadd(key string, member string) error {
+func (r *RedisWrap) Sadd(key string, member ...string) error {
 	conn := r.GetConn()
 	defer conn.Close()
 	_, err := conn.Do("SADD", key, member)
@@ -377,11 +377,22 @@ func (r *RedisWrap) Sismember(key string, member string) (bool, error) {
 	return redis.Bool(conn.Do("SISMEMBER", key, member))
 }
 
-func (r *RedisWrap) Srem(key string, member string) error {
+func (r *RedisWrap) Srem(key string, member ...string) error {
 	conn := r.GetConn()
 	defer conn.Close()
 	_, err := conn.Do("SREM", key, member)
 	return err
+}
+
+func (r *RedisWrap) SINTER(key1 string, key ...string) ([]string, error) {
+	conn := r.GetConn()
+	defer conn.Close()
+	return redis.Strings(conn.Do("SINTER", key1, key))
+}
+func (r *RedisWrap) SUNION(key1 string, key ...string) ([]string, error) {
+	conn := r.GetConn()
+	defer conn.Close()
+	return redis.Strings(conn.Do("SUNION", key1, key))
 }
 
 func (r *RedisWrap) SPop(key string) (string, error) {
@@ -475,4 +486,23 @@ func (r *RedisWrap) Zrangebyscore(key string, min int64, max int64, withscore bo
 		return redis.Strings(conn.Do("ZRANGEBYSCORE", key, min, max))
 	}
 	return redis.Strings(conn.Do("ZRANGEBYSCORE", key, min, max, "WITHSCORES"))
+}
+
+func (r *RedisWrap) PFADD(key string, element ...string) (int64, error) {
+	conn := r.GetConn
+	defer conn().Close()
+	return redis.Int64(conn().Do("PFADD", key, element))
+}
+
+func (r *RedisWrap) PFCount(key string) (int64, error) {
+	conn := r.GetConn()
+	defer conn.Close()
+	return redis.Int64(conn.Do("PFCOUNT", key))
+}
+
+func (r *RedisWrap) PFMERGE(destKey, sourceKey string, sourceElement ...string) error {
+	conn := r.GetConn()
+	defer conn.Close()
+	_, err := conn.Do("PFCOUNT", destKey, sourceKey, sourceElement)
+	return err
 }
