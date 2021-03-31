@@ -489,9 +489,9 @@ func (r *RedisWrap) Zrangebyscore(key string, min int64, max int64, withscore bo
 }
 
 func (r *RedisWrap) PFADD(key string, element ...string) (int64, error) {
-	conn := r.GetConn
-	defer conn().Close()
-	return redis.Int64(conn().Do("PFADD", key, element))
+	conn := r.GetConn()
+	defer conn.Close()
+	return redis.Int64(conn.Do("PFADD", key, element))
 }
 
 func (r *RedisWrap) PFCount(key string) (int64, error) {
