@@ -44,7 +44,7 @@ func GetServiceLock(service string, key interface{}) *sync.Mutex {
 	return lock.(*sync.Mutex)
 }
 
-// 延长锁的使用，针对大时间事务需要延长锁的情况
+//LockExtendTime 延长锁的使用，针对大时间事务需要延长锁的情况
 func LockExtendTime(service string, key interface{}, lock *sync.Mutex) error {
 	_lockTimeout := time.Second * time.Duration(lockTimeout)
 	k := service + fmt.Sprint(key)

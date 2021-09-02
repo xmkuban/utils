@@ -15,12 +15,12 @@ func KeyInSlice(key string, slice []string) (index int) {
 	return -1
 }
 
-//如果map里面的key不是字符串，则返回def，否则返回map里面的
+//MStrDdf 如果map里面的key不是目标key，则返回def，否则返回key对应的value
 func MStrDdf(source map[string]interface{}, key, def string) string {
 	_data, ok := source[key]
 	if ok {
-		res, ok := _data.(string)
-		if ok {
+		res, ok1 := _data.(string)
+		if ok1 {
 			return res
 		}
 	}
@@ -225,6 +225,7 @@ func CheckMKeys(source map[string]interface{}, keys []string) (err error) {
 	return fmt.Errorf("%s are/is missing", missStr)
 }
 
+//MMerge 2个map合并
 func MMerge(base map[string]interface{}, args ...map[string]interface{}) map[string]interface{} {
 	for _, arg := range args {
 		for k, v := range arg {

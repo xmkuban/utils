@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-//help get docker local ip
+//GetDockerLocalIP  获取本地ip
 func GetDockerLocalIP() string {
 	ifaces, err := net.Interfaces()
 	// handle err

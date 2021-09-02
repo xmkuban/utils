@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-//模拟三元运算
+//Condition 模拟三元运算
 func Condition(cond bool, a, b interface{}) (result interface{}) {
 	if cond {
 		result = a

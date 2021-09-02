@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-//获取时间戳 单位s
+//TimeToSecondTimestamp 获取时间戳 单位s
 func TimeToSecondTimestamp(t time.Time) int64 {
 	timestamp := t.Unix()
 	if timestamp <= 0 {
@@ -15,7 +15,7 @@ func TimeToSecondTimestamp(t time.Time) int64 {
 	return timestamp
 }
 
-//获取时间戳 单位ms
+//TimeToMillSecondTimestamp 获取时间戳 单位ms
 func TimeToMillSecondTimestamp(t time.Time) int64 {
 	timestamp := t.UnixNano()
 	if timestamp <= 0 {
@@ -24,7 +24,7 @@ func TimeToMillSecondTimestamp(t time.Time) int64 {
 	return timestamp / 1000000
 }
 
-//获取日期对应的0点时间戳，单位s
+//GetDateZeroTimestamp 获取日期对应的0点时间戳，单位s
 func GetDateZeroTimestamp(date time.Time) int64 {
 	t := date.Unix()
 	t = t - int64(date.Hour())*3600
@@ -33,7 +33,16 @@ func GetDateZeroTimestamp(date time.Time) int64 {
 	return t
 }
 
-//将时间戳转成 time.Time
+//GetDateZeroMillSecondTimestamp 获取日期对应的0点时间戳，单位ms
+func GetDateZeroMillSecondTimestamp(date time.Time) int64 {
+	t := date.Unix()
+	t = t - int64(date.Hour())*3600
+	t = t - int64(date.Minute())*60
+	t = t - int64(date.Second())
+	return t * 1000
+}
+
+//SecondTimestampToTime 将时间戳转成 time.Time
 func SecondTimestampToTime(timestamp int64) time.Time {
 	if timestamp == 0 {
 		return time.Time{}
