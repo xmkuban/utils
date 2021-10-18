@@ -45,7 +45,7 @@ import (
 
 var (
 	// DefaultKey the collection name of redis for cache adapter.
-	DefaultKey = "beecacheRedis"
+	DefaultKey = ""
 )
 
 // Cache is Redis cache adapter.
@@ -77,6 +77,9 @@ func (rc *Cache) do(commandName string, args ...interface{}) (reply interface{},
 
 // associate with config key.
 func (rc *Cache) associate(originKey interface{}) string {
+	if rc.key == "" {
+		return fmt.Sprint(originKey)
+	}
 	return fmt.Sprintf("%s:%s", rc.key, originKey)
 }
 
