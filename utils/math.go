@@ -56,6 +56,17 @@ func FloatExponent(a float64, exp int32) float64 {
 	return _c
 }
 
+func FloatExponentToStr(a float64, exp int32) string {
+	if a == 0 {
+		return "0"
+	}
+	_c := decimal.NewFromFloatWithExponent(a, -exp).String()
+	if _c == "" {
+		_c = "0"
+	}
+	return _c
+}
+
 func DecimalToFloat(a decimal.Decimal) float64 {
 	b, _ := a.Float64()
 	return b
