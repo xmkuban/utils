@@ -1,6 +1,8 @@
 module github.com/xmkuban/utils
 
-go 1.14
+go 1.16
+
+replace github.com/willf/bitset v1.1.11 => github.com/bits-and-blooms/bitset v1.2.1
 
 require (
 	github.com/Terry-Mao/goconf v0.0.0-20161115082538-13cb73d70c44
@@ -18,7 +20,8 @@ require (
 	github.com/shopspring/decimal v1.2.0
 	github.com/skip2/go-qrcode v0.0.0-20200526175731-7ac0b40b2038
 	github.com/ssdb/gossdb v0.0.0-20180723034631-88f6b59b84ec
-	github.com/tuotoo/qrcode v0.0.0-20190222102259-ac9c44189bf2 // indirect
+	github.com/tuotoo/qrcode v0.0.0-20190222102259-ac9c44189bf2
+	github.com/willf/bitset v1.1.11 // indirect
 	github.com/xmkuban/logger v0.0.0-20200924025207-8d2edb3a2ddc
 	go.mongodb.org/mongo-driver v1.3.4
 	golang.org/x/image v0.0.0-20200609002522-3f4726a040e8
