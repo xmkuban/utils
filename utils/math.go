@@ -23,6 +23,9 @@ func FloatSubNum(a, b float64) float64 {
 }
 
 func FloatMulNum(a, b float64, exp int32) float64 {
+	if a == 0 || b == 0 {
+		return 0
+	}
 	_a := decimal.NewFromFloat(a)
 	_b := decimal.NewFromFloat(b)
 	var c decimal.Decimal
@@ -36,6 +39,9 @@ func FloatMulNum(a, b float64, exp int32) float64 {
 }
 
 func FloatDivNum(a, b float64, exp int32) float64 {
+	if a == 0 || b == 0 {
+		return 0
+	}
 	_a := decimal.NewFromFloat(a)
 	_b := decimal.NewFromFloat(b)
 	var c decimal.Decimal
