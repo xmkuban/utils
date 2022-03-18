@@ -13,11 +13,8 @@ const (
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 func GenRandomString(n int) string {
+	rand.Seed(time.Now().UnixNano())
 	var src = rand.NewSource(time.Now().UnixNano())
 
 	b := make([]byte, n)
@@ -39,6 +36,7 @@ func GenRandomString(n int) string {
 }
 
 func RandomStrArr(arr []string, length int) error {
+	rand.Seed(time.Now().UnixNano())
 	if len(arr) <= 0 {
 		return errors.New("the length of the parameter strings should not be less than 0")
 	}
@@ -55,6 +53,7 @@ func RandomStrArr(arr []string, length int) error {
 }
 
 func GetRandNumber(num int) int {
+	rand.Seed(time.Now().UnixNano())
 	if num == 0 {
 		return 0
 	}
@@ -66,6 +65,7 @@ func GetRandNumber(num int) int {
 }
 
 func GetRandNumberInt64(num int64) int64 {
+	rand.Seed(time.Now().UnixNano())
 	if num == 0 {
 		return 0
 	}
