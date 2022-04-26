@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"crypto/md5"
+	"fmt"
+	"io"
 	"net"
 	"strings"
 
@@ -38,4 +41,23 @@ func GetUUID() string {
 
 func GetUUIDNoDash() string {
 	return strings.Replace(uuid.New().String(), "-", "", -1)
+}
+
+func MD5(src string) string {
+	h := md5.New()
+	io.WriteString(h, src)
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+func MD5ByLength16(src string) string {
+	res := MD5(src)
+	res = res[8:]
+	res = res[:16]
+	return res
+}
+
+func EmptyString(str string) bool {
+	if len(strings.TrimSpace(str)) == 0 {
+		return true
+	}
+	return false
 }
