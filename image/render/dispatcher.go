@@ -60,7 +60,7 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 				return
 			}
 			viewer := viewMapping()
-			err := viewer.Init(viewData)
+			err = viewer.Init(viewData)
 			if err != nil {
 				return
 			}
@@ -73,6 +73,13 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 		})(i, value)
 	}
 	waitInit.Wait()
+
+	if renderRequest.W > 0 {
+		actualWidth = renderRequest.W
+	}
+	if renderRequest.H > 0 {
+		actualHeight = renderRequest.H
+	}
 
 	ctx := gg.NewContext(actualWidth, actualHeight)
 	graphic, err := NewGraphic(ctx)
