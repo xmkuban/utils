@@ -80,8 +80,10 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 	if renderRequest.H > 0 {
 		actualHeight = renderRequest.H
 	}
-
 	ctx := gg.NewContext(actualWidth, actualHeight)
+	if renderRequest.Color != "" {
+		ctx.SetHexColor(renderRequest.Color)
+	}
 	graphic, err := NewGraphic(ctx)
 	defer func() {
 		if graphic != nil {

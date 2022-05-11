@@ -8,6 +8,7 @@ type ImageData struct {
 	View    []ViewData  `json:"views"`
 	W       int         `json:"w"`
 	H       int         `json:"h"`
+	Color   string      `json:"color"`
 }
 
 type ViewData struct {
