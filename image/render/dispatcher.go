@@ -114,11 +114,13 @@ func Dispatch(renderRequest *ImageData) (renderResult []byte, err error) {
 		return
 	}
 	for _, viewer := range viewOrder {
-		if viewer != nil {
-			err = viewer.Draw(graphic)
-			if err != nil {
-				logger.Error(err)
-			}
+		if viewer == nil {
+			continue
+		}
+		err = viewer.Draw(graphic)
+		if err != nil {
+			logger.Error(err)
+			return nil, err
 		}
 	}
 	buf := new(bytes.Buffer)
