@@ -5,7 +5,7 @@ import "image"
 type ImageData struct {
 	Quality int         `json:"quality"`
 	Format  ImageFormat `json:"format"`
-	View    []ViewData  `json:"views"`
+	View    []*ViewData `json:"views"`
 	W       int         `json:"w"`
 	H       int         `json:"h"`
 	Color   string      `json:"color"`

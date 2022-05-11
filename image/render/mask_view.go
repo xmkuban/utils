@@ -24,7 +24,7 @@ func (view *MaskView) Draw(graphic *Graphic) error {
 	return nil
 }
 
-func (view *MaskView) Init(data ViewData) (err error) {
+func (view *MaskView) Init(data *ViewData) (err error) {
 	view.data = data
 	return
 }

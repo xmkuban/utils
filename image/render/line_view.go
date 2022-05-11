@@ -31,7 +31,7 @@ func (view *LineView) Draw(graphic *Graphic) error {
 	return nil
 }
 
-func (view *LineView) Init(data ViewData) (err error) {
+func (view *LineView) Init(data *ViewData) (err error) {
 	view.data = data
 	return
 }

@@ -16,7 +16,7 @@ func init() {
 	})
 }
 
-func (view *QrView) Init(data ViewData) error {
+func (view *QrView) Init(data *ViewData) error {
 	view.data = data
 	qr, err := qrcode.New(data.Text, qrcode.RecoveryLevel(data.Level))
 	if err != nil {

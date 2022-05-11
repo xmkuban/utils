@@ -15,6 +15,7 @@ import (
 
 // Max image size: 200KB
 //const MAX_IMAGE_SIZE = 1024 * 512
+
 const ImageViewType = "image"
 
 type ImageView struct {
@@ -46,7 +47,7 @@ func (view *ImageView) Draw(graphic *Graphic) error {
 	return nil
 }
 
-func (view *ImageView) Init(data ViewData) (err error) {
+func (view *ImageView) Init(data *ViewData) (err error) {
 	view.data = data
 	if data.URL == "" {
 		return errors.New("invalid image data")

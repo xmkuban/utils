@@ -1,7 +1,7 @@
 package render
 
 type Viewer interface {
-	Init(data ViewData) (err error)
+	Init(data *ViewData) (err error)
 	Measure() (info MeasureInfo, err error)
 	Draw(graphic *Graphic) (err error)
 }
@@ -11,7 +11,7 @@ type MeasureInfo struct {
 }
 
 type View struct {
-	data   ViewData
+	data   *ViewData
 	bounds MeasureInfo
 }
 

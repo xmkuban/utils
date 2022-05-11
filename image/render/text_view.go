@@ -63,7 +63,7 @@ func (view *TextView) adjustFontSize(maxSize int, face font.Face, measure func(t
 	return
 }
 
-func (view *TextView) Init(data ViewData) (err error) {
+func (view *TextView) Init(data *ViewData) (err error) {
 	view.data = data
 	if data.Text == "" {
 		err = errors.New("empty text for text view")
