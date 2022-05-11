@@ -83,15 +83,15 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 	ctx := gg.NewContext(actualWidth, actualHeight)
 	if renderRequest.Color != "" {
 		ctx.SetHexColor(renderRequest.Color)
+		ctx.Clear()
 	}
 	graphic, err := NewGraphic(ctx)
 	defer func() {
 		if graphic != nil {
-			graphic.Fill()
 			graphic = nil
 		}
 		if ctx != nil {
-			ctx.Fill()
+			ctx.ClearPath()
 			ctx = nil
 		}
 	}()
@@ -106,9 +106,7 @@ func Dispatch(renderRequest ImageData) (renderResult []byte, err error) {
 			}
 		}
 	}
-
 	buf := new(bytes.Buffer)
-
 	switch renderRequest.Format {
 	case PNG:
 		err = ctx.EncodePNG(buf)
