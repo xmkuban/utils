@@ -8,6 +8,7 @@ require (
 	github.com/Terry-Mao/goconf v0.0.0-20161115082538-13cb73d70c44
 	github.com/astaxie/beego v1.12.2
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
+	github.com/chai2010/webp v1.1.1
 	github.com/fogleman/gg v1.3.1-0.20200515011029-ad4d1eafac46
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/go-sql-driver/mysql v1.5.0
@@ -24,7 +25,7 @@ require (
 	github.com/willf/bitset v1.1.11 // indirect
 	github.com/xmkuban/logger v0.0.0-20200924025207-8d2edb3a2ddc
 	go.mongodb.org/mongo-driver v1.3.4
-	golang.org/x/image v0.0.0-20200609002522-3f4726a040e8
+	golang.org/x/image v0.0.0-20211028202545-6944b10bf410
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )
