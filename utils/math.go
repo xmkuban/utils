@@ -2,8 +2,10 @@ package utils
 
 import (
 	"math"
+	"strconv"
 
 	"github.com/shopspring/decimal"
+	"github.com/spf13/cast"
 )
 
 func FloatAddNum(a, b float64) float64 {
@@ -23,6 +25,7 @@ func FloatSubNum(a, b float64) float64 {
 }
 
 func FloatMulNum(a, b float64, exp int32) float64 {
+	exp = exp + 1
 	if a == 0 || b == 0 {
 		return 0
 	}
@@ -35,10 +38,12 @@ func FloatMulNum(a, b float64, exp int32) float64 {
 		c = _a.Mul(_b).Truncate(exp)
 	}
 	_c, _ := c.Float64()
+	_c = FormatFloat(_c, int(exp-1))
 	return _c
 }
 
 func FloatDivNum(a, b float64, exp int32) float64 {
+	exp = exp + 1
 	if a == 0 || b == 0 {
 		return 0
 	}
@@ -51,14 +56,17 @@ func FloatDivNum(a, b float64, exp int32) float64 {
 		c = _a.Div(_b).Truncate(exp)
 	}
 	_c, _ := c.Float64()
+	_c = FormatFloat(_c, int(exp-1))
 	return _c
 }
 
 func FloatExponent(a float64, exp int32) float64 {
+	exp = exp + 1
 	if a == 0 {
 		return 0
 	}
 	_c, _ := decimal.NewFromFloatWithExponent(a, -exp).Float64()
+	_c = FormatFloat(_c, int(exp-1))
 	return _c
 }
 
@@ -84,4 +92,12 @@ func MaxInt(a, b int) int {
 
 func MinInt(a, b int) int {
 	return int(math.Min(float64(a), float64(b)))
+}
+
+func FormatFloat(f float64, dig int) float64 {
+	result := cast.ToFloat64(strconv.FormatFloat(f, 'f', dig+1, 64))
+
+	pow := math.Pow(10, float64(dig))
+
+	return math.Round(result*pow) / pow
 }
