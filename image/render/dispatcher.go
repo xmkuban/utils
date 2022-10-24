@@ -10,7 +10,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chai2010/webp"
 	"github.com/fogleman/gg"
 	"github.com/go-resty/resty/v2"
 	"github.com/xmkuban/logger"
@@ -29,7 +28,6 @@ type ImageFormat int
 const (
 	JPEG ImageFormat = iota
 	PNG
-	WEBP
 )
 
 var viewHandlerMappingStore = make(map[string]func() Viewer, 0)
@@ -128,19 +126,6 @@ func Dispatch(renderRequest *ImageData) (renderResult []byte, err error) {
 	switch renderRequest.Format {
 	case PNG:
 		err = ctx.EncodePNG(buf)
-	case WEBP:
-		if renderRequest.Quality >= 100 {
-			err = webp.Encode(buf, ctx.Image(), &webp.Options{
-				Lossless: true,
-			})
-		} else {
-			quality := utils.Condition(renderRequest.Quality <= 0, 90, renderRequest.Quality).(int)
-			err = webp.Encode(buf, ctx.Image(), &webp.Options{
-				Lossless: false,
-				Quality:  float32(quality),
-				Exact:    true,
-			})
-		}
 	default:
 		quality := utils.Condition(renderRequest.Quality <= 0, 90, renderRequest.Quality).(int)
 		err = ctx.EncodeJPG(buf, &jpeg.Options{Quality: quality})
