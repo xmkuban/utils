@@ -6,43 +6,39 @@ import (
 	"time"
 )
 
-//TimeToSecondTimestamp 获取时间戳 单位s
-func TimeToSecondTimestamp(t time.Time) int64 {
-	timestamp := t.Unix()
-	if timestamp <= 0 {
-		return 0
-	}
-	return timestamp
+// ZeroSecondTimestampByTime 获取日期对应的0点时间戳，单位s
+func ZeroSecondTimestampByTime(date time.Time) int64 {
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location()).Unix()
 }
 
-//TimeToMillSecondTimestamp 获取时间戳 单位ms
-func TimeToMillSecondTimestamp(t time.Time) int64 {
-	timestamp := t.UnixNano()
-	if timestamp <= 0 {
-		return 0
-	}
-	return timestamp / 1000000
+// ZeroMillSecondTimestampByTime 获取日期对应的0点时间戳，单位ms
+func ZeroMillSecondTimestampByTime(date time.Time) int64 {
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location()).UnixMilli()
 }
 
-//GetDateZeroTimestamp 获取日期对应的0点时间戳，单位s
-func GetDateZeroTimestamp(date time.Time) int64 {
-	t := date.Unix()
-	t = t - int64(date.Hour())*3600
-	t = t - int64(date.Minute())*60
-	t = t - int64(date.Second())
-	return t
+// ZeroDateByTime 获取日期对应的0点时间
+func ZeroDateByTime(date time.Time) time.Time {
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location())
 }
 
-//GetDateZeroMillSecondTimestamp 获取日期对应的0点时间戳，单位ms
-func GetDateZeroMillSecondTimestamp(date time.Time) int64 {
-	t := date.Unix()
-	t = t - int64(date.Hour())*3600
-	t = t - int64(date.Minute())*60
-	t = t - int64(date.Second())
-	return t * 1000
+// ZeroMillSecondTimestampByTimestamp 通过时间戳转成获取日期对应的0点时间戳
+func ZeroMillSecondTimestampByTimestamp(t int64) int64 {
+	date := SecondTimestampToTime(t)
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location()).UnixMilli()
 }
 
-//SecondTimestampToTime 将时间戳转成 time.Time
+// ZeroDateByTimestamp 通过时间戳转成获取日期对应的0点时间
+func ZeroDateByTimestamp(t int64) time.Time {
+	date := SecondTimestampToTime(t)
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location())
+}
+
+// SecondTimestampToTime 将时间戳转成 time.Time
 func SecondTimestampToTime(timestamp int64) time.Time {
 	if timestamp == 0 {
 		return time.Time{}
@@ -59,7 +55,7 @@ func SecondTimestampToTime(timestamp int64) time.Time {
 type ExTime time.Time
 
 func (t ExTime) MarshalJSON() ([]byte, error) {
-	var stamp = fmt.Sprintf("%d", t.MillSecond())
+	var stamp = fmt.Sprintf("%d", t.Time().UnixMilli())
 	return []byte(stamp), nil
 }
 
@@ -77,8 +73,4 @@ func (t *ExTime) UnmarshalJSON(b []byte) error {
 
 func (t ExTime) Time() time.Time {
 	return time.Time(t)
-}
-
-func (t ExTime) MillSecond() int64 {
-	return TimeToMillSecondTimestamp(t.Time())
 }

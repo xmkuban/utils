@@ -1,6 +1,6 @@
 module github.com/xmkuban/utils
 
-go 1.16
+go 1.19
 
 replace github.com/willf/bitset v1.1.11 => github.com/bits-and-blooms/bitset v1.2.1
 
@@ -22,10 +22,24 @@ require (
 	github.com/spf13/cast v1.5.0
 	github.com/ssdb/gossdb v0.0.0-20180723034631-88f6b59b84ec
 	github.com/tuotoo/qrcode v0.0.0-20190222102259-ac9c44189bf2
-	github.com/willf/bitset v1.1.11 // indirect
 	github.com/xmkuban/logger v0.0.0-20200924025207-8d2edb3a2ddc
 	go.mongodb.org/mongo-driver v1.3.4
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+)
+
+require (
+	github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575 // indirect
+	github.com/go-stack/stack v1.8.0 // indirect
+	github.com/golang/snappy v0.0.1 // indirect
+	github.com/klauspost/compress v1.9.5 // indirect
+	github.com/maruel/rs v0.0.0-20150922171536-2c81c4312fe4 // indirect
+	github.com/pkg/errors v0.8.1 // indirect
+	github.com/willf/bitset v1.1.11 // indirect
+	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
+	github.com/xdg/stringprep v0.0.0-20180714160509-73f8eece6fdc // indirect
+	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550 // indirect
+	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
+	golang.org/x/text v0.3.6 // indirect
 )
