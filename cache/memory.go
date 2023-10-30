@@ -133,6 +133,7 @@ func (bc *MemoryCache) Delete(name string) error {
 	if _, ok := bc.items[name]; !ok {
 		return errors.New("key not exist")
 	}
+	bc.items[name] = nil
 	delete(bc.items, name)
 	if _, ok := bc.items[name]; ok {
 		return errors.New("delete key error")
