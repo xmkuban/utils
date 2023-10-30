@@ -256,38 +256,39 @@ func (bc *MemoryCache) vacuum() {
 			return
 		}
 		length := len(bc.items)
-		if len(bc.items) == 0 {
+		if length == 0 {
 			bc.Lock()
 			bc.items = nil
 			bc.Unlock()
 		}
 		if length < 10000 {
-			keyMap := bc.notExpiredKeys()
-			bc.Lock()
-			bc.items = keyMap
-			bc.Unlock()
-		}
-		if keys := bc.expiredKeys(); len(keys) != 0 {
-			bc.clearItems(keys)
+			bc.notExpiredKeys()
+		} else {
+			bc.expiredKeys()
 		}
 	}
 }
 
 // expiredKeys returns key list which are expired.
-func (bc *MemoryCache) expiredKeys() (keys []string) {
+func (bc *MemoryCache) expiredKeys() {
 	bc.RLock()
-	defer bc.RUnlock()
+	keys := make([]string, 0)
 	for key, itm := range bc.items {
 		if itm.isExpire() {
 			keys = append(keys, key)
 		}
 	}
+	bc.RUnlock()
+	if len(keys) == 0 {
+		return
+	}
+	bc.clearItems(keys)
+	keys = nil
 	return
 }
 
-func (bc *MemoryCache) notExpiredKeys() map[string]*MemoryItem {
+func (bc *MemoryCache) notExpiredKeys() {
 	bc.RLock()
-	defer bc.RUnlock()
 	keyMap := make(map[string]*MemoryItem)
 	for _key, _itm := range bc.items {
 		key := _key
@@ -296,7 +297,12 @@ func (bc *MemoryCache) notExpiredKeys() map[string]*MemoryItem {
 			keyMap[key] = itm
 		}
 	}
-	return keyMap
+	bc.RUnlock()
+	bc.Lock()
+	bc.items = nil
+	bc.items = keyMap
+	bc.Unlock()
+	return
 }
 
 // clearItems removes all the items which key in keys.
