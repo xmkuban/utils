@@ -11,13 +11,13 @@ import (
 
 var (
 	registerServiceLock = sync.Mutex{}
-	lockCache           cache.Cache
+	lockCache           *cache.MemoryCache
 
 	lockTimeout = 30 //server下的key锁过期时间, 单位秒, 目前限制最少存1s
 )
 
 func init() {
-	lockCache, _ = cache.NewCache("memory", `{"interval":30}`)
+	lockCache = cache.NewMemoryCache(&cache.MemoryConf{Interval: 30})
 }
 
 func GetServiceLock(service string, key interface{}) *sync.Mutex {
@@ -44,7 +44,7 @@ func GetServiceLock(service string, key interface{}) *sync.Mutex {
 	return lock.(*sync.Mutex)
 }
 
-//LockExtendTime 延长锁的使用，针对大时间事务需要延长锁的情况
+// LockExtendTime 延长锁的使用，针对大时间事务需要延长锁的情况
 func LockExtendTime(service string, key interface{}, lock *sync.Mutex) error {
 	_lockTimeout := time.Second * time.Duration(lockTimeout)
 	k := service + fmt.Sprint(key)
