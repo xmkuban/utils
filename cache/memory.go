@@ -257,13 +257,21 @@ func (bc *MemoryCache) vacuum() {
 		if bc.items == nil {
 			return
 		}
-		keyMap := bc.notExpiredKeys()
-		bc.Lock()
-		bc.items = keyMap
-		bc.Unlock()
-		//if keys := bc.expiredKeys(); len(keys) != 0 {
-		//	bc.clearItems(keys)
-		//}
+		length := len(bc.items)
+		if len(bc.items) == 0 {
+			bc.Lock()
+			bc.items = nil
+			bc.Unlock()
+		}
+		if length < 10000 {
+			keyMap := bc.notExpiredKeys()
+			bc.Lock()
+			bc.items = keyMap
+			bc.Unlock()
+		}
+		if keys := bc.expiredKeys(); len(keys) != 0 {
+			bc.clearItems(keys)
+		}
 	}
 }
 
@@ -298,6 +306,7 @@ func (bc *MemoryCache) clearItems(keys []string) {
 	bc.Lock()
 	defer bc.Unlock()
 	for _, key := range keys {
+		bc.items[key] = nil
 		delete(bc.items, key)
 	}
 }
@@ -309,6 +318,12 @@ func (bc *MemoryCache) TTL(key string) time.Duration {
 		return 0
 	}
 	return bc.items[key].ttl()
+}
+
+func (bc *MemoryCache) Size() int {
+	bc.RLock()
+	defer bc.RUnlock()
+	return len(bc.items)
 }
 
 func init() {
