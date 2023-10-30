@@ -257,9 +257,13 @@ func (bc *MemoryCache) vacuum() {
 		if bc.items == nil {
 			return
 		}
-		if keys := bc.expiredKeys(); len(keys) != 0 {
-			bc.clearItems(keys)
-		}
+		keyMap := bc.notExpiredKeys()
+		bc.Lock()
+		bc.items = keyMap
+		bc.Unlock()
+		//if keys := bc.expiredKeys(); len(keys) != 0 {
+		//	bc.clearItems(keys)
+		//}
 	}
 }
 
@@ -273,6 +277,20 @@ func (bc *MemoryCache) expiredKeys() (keys []string) {
 		}
 	}
 	return
+}
+
+func (bc *MemoryCache) notExpiredKeys() map[string]*MemoryItem {
+	bc.RLock()
+	defer bc.RUnlock()
+	keyMap := make(map[string]*MemoryItem)
+	for _key, _itm := range bc.items {
+		key := _key
+		itm := _itm
+		if !itm.isExpire() {
+			keyMap[key] = itm
+		}
+	}
+	return keyMap
 }
 
 // clearItems removes all the items which key in keys.
