@@ -17,10 +17,10 @@ import (
 	"github.com/xmkuban/utils/utils"
 )
 
-var imageCache cache.Cache
+var imageCache *cache.MemoryCache
 
 func init() {
-	imageCache, _ = cache.NewCache("memory", `{"interval":30}`)
+	imageCache = cache.NewMemoryCache(nil)
 }
 
 type ImageFormat int
