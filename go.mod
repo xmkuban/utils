@@ -15,7 +15,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/qiniu/api.v7/v7 v7.5.0
-	github.com/shopspring/decimal v1.2.0
+	github.com/shopspring/decimal v1.4.0
 	github.com/skip2/go-qrcode v0.0.0-20200526175731-7ac0b40b2038
 	github.com/spf13/cast v1.5.0
 	github.com/tuotoo/qrcode v0.0.0-20190222102259-ac9c44189bf2
