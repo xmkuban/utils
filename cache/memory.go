@@ -11,6 +11,9 @@ var (
 	DefaultEvery = 60 // 1 minute
 )
 
+var memCache *MemoryCache
+var memCacheLock sync.Mutex
+
 // MemoryItem store memory cache item.
 type MemoryItem struct {
 	val         interface{}
@@ -46,20 +49,17 @@ type MemoryCache struct {
 	Every     int // run an expiration check Every clock time
 	isStartGc bool
 }
-type MemoryConf struct {
-	Interval int //单位s
-}
 
 // NewMemoryCache new cache
-func NewMemoryCache(cfg *MemoryConf) *MemoryCache {
-	if cfg == nil {
-		cfg = &MemoryConf{Interval: DefaultEvery}
-	}
-	if cfg.Interval <= 0 {
-		cfg.Interval = DefaultEvery
+func NewMemoryCache() *MemoryCache {
+	memCacheLock.Lock()
+	defer memCacheLock.Unlock()
+	if memCache != nil {
+		return memCache
 	}
 	cache := &MemoryCache{items: make(map[string]*MemoryItem)}
-	cache.startAndGC(cfg)
+	memCache = cache
+	cache.startAndGC()
 	return cache
 }
 
@@ -213,10 +213,10 @@ func (bc *MemoryCache) ClearAll() error {
 }
 
 // StartAndGC start memory cache. it will check expiration in every clock time.
-func (bc *MemoryCache) startAndGC(config *MemoryConf) error {
+func (bc *MemoryCache) startAndGC() error {
 
-	dur := time.Duration(config.Interval) * time.Second
-	bc.Every = config.Interval
+	dur := time.Duration(DefaultEvery) * time.Second
+	bc.Every = DefaultEvery
 	bc.dur = dur
 	if bc.isStartGc {
 		return nil

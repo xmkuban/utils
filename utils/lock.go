@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	lockCache = cache.NewMemoryCache(&cache.MemoryConf{Interval: 30})
+	lockCache = cache.NewMemoryCache()
 }
 
 func GetServiceLock(service string, key interface{}) *sync.Mutex {
