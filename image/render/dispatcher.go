@@ -20,7 +20,7 @@ import (
 var imageCache *cache.MemoryCache
 
 func init() {
-	imageCache = cache.NewMemoryCache(nil)
+	imageCache = cache.NewMemoryCache()
 }
 
 type ImageFormat int

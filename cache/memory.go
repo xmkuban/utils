@@ -8,7 +8,7 @@ import (
 
 var (
 	// DefaultEvery means the clock time of recycling the expired cache items in memory.
-	DefaultEvery = 60 // 1 minute
+	DefaultEvery = 30 // 30 seconds
 )
 
 var memCache *MemoryCache
@@ -59,8 +59,15 @@ func NewMemoryCache() *MemoryCache {
 	}
 	cache := &MemoryCache{items: make(map[string]*MemoryItem)}
 	memCache = cache
-	cache.startAndGC()
+	go cache.startAndGC()
 	return cache
+}
+
+func (bc *MemoryCache) SetEvery(t int) {
+	DefaultEvery = t
+	dur := time.Duration(DefaultEvery) * time.Second
+	bc.Every = DefaultEvery
+	bc.dur = dur
 }
 
 // Get cache from memory.
@@ -214,6 +221,8 @@ func (bc *MemoryCache) ClearAll() error {
 
 // StartAndGC start memory cache. it will check expiration in every clock time.
 func (bc *MemoryCache) startAndGC() error {
+	// wait 1 second,wait set every
+	time.Sleep(time.Second)
 
 	dur := time.Duration(DefaultEvery) * time.Second
 	bc.Every = DefaultEvery
@@ -222,7 +231,9 @@ func (bc *MemoryCache) startAndGC() error {
 		return nil
 	}
 	bc.isStartGc = true
-	go bc.vacuum()
+	go func() {
+		bc.vacuum()
+	}()
 	return nil
 }
 
